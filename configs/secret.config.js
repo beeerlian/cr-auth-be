@@ -1,0 +1,1 @@
+exports.secret = "cr-auth-be-jwt-secret";
