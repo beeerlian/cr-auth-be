@@ -4,11 +4,9 @@ const secret = require('../configs/secret.config')
 const endpoint = require('../constants/endpoint.constants')
 
 
-exports.login = async (req, res) => {
+exports.create = async (req, res) => {
        try {
-              const response = await axios.post(`${endpoint.laravel}/signin`, req.body);
-              const token = jwt.sign(response.data, secret);
-              response.data.access_token = token;
+              const response = await axios.post(`${endpoint.node}/order`, req.body);
               res.status(200).send({
                      status: "success",
                      data: response.data
@@ -21,9 +19,9 @@ exports.login = async (req, res) => {
        }
 }
 
-exports.register = async (req, res) => {
+exports.get = async (req, res) => {
        try {
-              const response = await axios.post(`${endpoint.laravel}/signup`, req.body);
+              const response = await axios.get(`${endpoint.node}/order`, req.body);
               res.status(200).send({
                      status: "success",
                      data: response.data
@@ -31,7 +29,7 @@ exports.register = async (req, res) => {
        } catch (error) {
               res.status(error.response.status).send({
                      code: error.code,
-                     data: error.response.data
+                     data: error.response.data,
               })
        }
 }
