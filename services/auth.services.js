@@ -6,32 +6,40 @@ const endpoint = require('../constants/endpoint.constants')
 
 exports.login = async (req, res) => {
        try {
-              const response = await axios.post(`${endpoint.laravel}/signin`, req.body);
-              const token = jwt.sign(response.data, secret);
-              response.data.access_token = token;
+              const response = await axios.post(`${endpoint.laravel}/login`, req.body);
+              console.log(response.data.data)
+              const token = jwt.sign(response.data.data, toString(secret));
+              response.data.data.access_token = token;
               res.status(200).send({
                      status: "success",
-                     data: response.data
+                     data: response.data.data
               })
        } catch (error) {
-              res.status(error.response.status).send({
-                     code: error.code,
-                     data: error.response.data,
+              res.status(error.status || 400).send({
+                     code: error.code || "BAD_REQUEST",
+                     error: error.response.data.message || error.response.data || error.message || error
               })
        }
 }
 
 exports.register = async (req, res) => {
+
        try {
-              const response = await axios.post(`${endpoint.laravel}/signup`, req.body);
+              if ((req.user.role === "ADMIN" && req.body.role !== "CUSTOMER")) {
+                     throw `youre cannot access this method with ${req.user.role} role`;
+              }
+              if (req.body.role !== "CUSTOMER" && req.body.role !== "SUPER_ADMIN" && req.body.role !== "ADMIN") {
+                     throw `available role only "CUSTOMER", "SUPER_ADMIN", "ADMIN"`;
+              }
+              const response = await axios.post(`${endpoint.laravel}/user`, req.body);
               res.status(200).send({
                      status: "success",
-                     data: response.data
+                     data: response.data.data
               })
        } catch (error) {
-              res.status(error.response.status).send({
-                     code: error.code,
-                     data: error.response.data
+              res.status(error.status || 404).send({
+                     code: error.code || "BAD_REQUEST",
+                     error: error.response.data.message || error.response.data || error.message || error
               })
        }
 }

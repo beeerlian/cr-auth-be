@@ -1,5 +1,9 @@
-const middleware = {};
+const middleware = {
+       token: {},
+       role: {}
+};
 
-middleware.verify = require('./verify.token.middleware');
+middleware.token.verify = require('./verify.token.middleware');
+middleware.role.verify = require('./verify.role.middleware')
 
 module.exports = middleware;
