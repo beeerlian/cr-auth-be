@@ -2,6 +2,7 @@ const express = require('express');
 const routes = require('./routes')
 const bodyParser = require('body-parser');
 const cors = require("cors");
+require('dotenv').config()
 
 //express
 var corsOptions = {
@@ -16,7 +17,8 @@ app.use(bodyParser.json())
 
 routes(app);
 
-
-app.listen(8081, () => {
+const PORT = 8081;
+const HOST = '0.0.0.0';
+app.listen(PORT, HOST, () => {
        console.log('Server running at http://localhost:8081/');
 });

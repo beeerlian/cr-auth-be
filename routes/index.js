@@ -1,5 +1,8 @@
 const order = require('./order.route')
 const auth = require('./auth.route')
+const item = require('./item.route')
+const transaction = require('./transaction.route')
+
 
 module.exports = function (app) {
        app.use(function (req, res, next) {
@@ -10,6 +13,9 @@ module.exports = function (app) {
               next();
        });
 
+       item(app)
        order(app);
        auth(app);
+       transaction(app);
+
 }

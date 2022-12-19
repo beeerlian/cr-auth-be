@@ -31,7 +31,7 @@ exports.register = async (req, res) => {
               if (req.body.role !== "CUSTOMER" && req.body.role !== "SUPER_ADMIN" && req.body.role !== "ADMIN") {
                      throw `available role only "CUSTOMER", "SUPER_ADMIN", "ADMIN"`;
               }
-              const response = await axios.post(`${endpoint.laravel}/user`, req.body);
+              const response = await axios.post(`${endpoint.laravel}/register`, req.body);
               res.status(200).send({
                      status: "success",
                      data: response.data.data

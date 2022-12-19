@@ -2,13 +2,16 @@ const jwt = require('jsonwebtoken')
 const secret = require('../configs/secret.config')
 
 module.exports = (req, res, next) => {
-       if (!req.headers["x-access-token"]) {
+       if (!req.headers["x-access-token"] && !req.headers["Authorization"] && !req.headers["authorization"]) {
               return res.status(402).send({
                      status: "error",
                      message: "x-access-token or authorization headers is required"
               })
        }
        let token = req.headers["x-access-token"] || req.headers["authorization"].split(' ')[1];
+       if (req.headers["Authorization"]) {
+              token = req.headers["Authorization"].replace("Bearer ", "")
+       }
        if (!token) {
               return res.status(402).send({
                      status: "error",
