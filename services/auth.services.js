@@ -43,3 +43,35 @@ exports.register = async (req, res) => {
               })
        }
 }
+
+exports.getAllUser = async (req, res) => {
+
+       try {
+              const response = await axios.get(`${endpoint.laravel}/user`);
+              res.status(200).send({
+                     status: "success",
+                     data: response?.data?.data
+              })
+       } catch (error) {
+              res.status(error.status || 404).send({
+                     code: error.code || "BAD_REQUEST",
+                     error: error?.response?.data?.message || error?.response?.data || error?.message || error
+              })
+       }
+}
+
+exports.getUserById = async (req, res) => {
+
+       try {
+              const response = await axios.get(`${endpoint.laravel}/user/${req.params.id}`);
+              res.status(200).send({
+                     status: "success",
+                     data: response?.data?.data
+              })
+       } catch (error) {
+              res.status(error.status || 404).send({
+                     code: error.code || "BAD_REQUEST",
+                     error: error?.response?.data?.message || error?.response?.data || error?.message || error
+              })
+       }
+}
