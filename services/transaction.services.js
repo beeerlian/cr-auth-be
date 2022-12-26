@@ -35,6 +35,9 @@ exports.getAll = async (req, res) => {
 exports.get = async (req, res) => {
        try {
               const response = await axios.get(`${endpoint.node}/transaction/${req.params.id}`);
+              const user = await axios.get(`${endpoint.laravel}/user/${response.data.teller_id}`);
+              console.log(user)
+              response.data.teller = user?.data?.data
               res.status(200).send({
                      status: "success",
                      data: response.data || null
